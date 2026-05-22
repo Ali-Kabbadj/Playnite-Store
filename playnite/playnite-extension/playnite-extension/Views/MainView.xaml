@@ -1,0 +1,155 @@
+﻿<UserControl x:Class="GamesNexus.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:GamesNexus.Converters"
+             xmlns:views="clr-namespace:GamesNexus.Views"
+             mc:Ignorable="d" d:DesignHeight="700" d:DesignWidth="900"
+             Background="Transparent" TextOptions.TextFormattingMode="Ideal" TextOptions.TextRenderingMode="Auto">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <converters:NullToVisibilityConverter x:Key="NullToVis" />
+        <FontFamily x:Key="FontIcoFont">Segoe MDL2 Assets</FontFamily>
+        <SolidColorBrush x:Key="FxControlBg" Color="Transparent" />
+        <SolidColorBrush x:Key="FxControlHover" Color="#3DFFFFFF" />
+        <SolidColorBrush x:Key="FxCardBg" Color="#14FFFFFF" />
+        <SolidColorBrush x:Key="FxAccent" Color="#0379FF" />
+        <SolidColorBrush x:Key="FxText" Color="#CCFFFFFF" />
+        <SolidColorBrush x:Key="FxTextSubtle" Color="#99FFFFFF" />
+        <SolidColorBrush x:Key="GridViewCoverSubtitleBrush" Color="#99FFFFFF" />
+        <SolidColorBrush x:Key="FxSuccess" Color="#00E676" />
+        <SolidColorBrush x:Key="FxWarning" Color="#FFD600" />
+        <SolidColorBrush x:Key="FxDanger" Color="#FF453A" />
+        <Style x:Key="FxTabButton" TargetType="RadioButton">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource FxTextSubtle}" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Padding" Value="16,8" />
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="BgBorder" Background="{TemplateBinding Background}" CornerRadius="16">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
+                                <ContentPresenter />
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="BgBorder" Property="Background" Value="#1AFFFFFF" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="BgBorder" Property="Background" Value="{StaticResource FxControlBg}" />
+                                <Setter Property="Foreground" Value="White" />
+                                <Setter Property="FontWeight" Value="Bold" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="FxActionBtn" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource FxControlBg}" />
+            <Setter Property="Foreground" Value="{StaticResource FxText}" />
+            <Setter Property="Padding" Value="16,8" />
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bg" Background="{TemplateBinding Background}" CornerRadius="16">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="{StaticResource FxControlHover}" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="FxInput" TargetType="Control">
+            <Setter Property="Background" Value="{StaticResource FxControlBg}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="#33FFFFFF" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Control">
+                        <Border x:Name="InputBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="16" Margin="0,10,0,0">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="InputBorder" Property="BorderBrush" Value="{StaticResource FxAccent}" />
+                                <Setter TargetName="InputBorder" Property="BorderThickness" Value="1.5" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="InputBorder" Property="BorderBrush" Value="#66FFFFFF" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Background="{StaticResource FxControlBg}" CornerRadius="0,0,24,24" Margin="0,0,0,16" Padding="16,8">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,34,0,-8">
+                <RadioButton x:Name="CatalogTab" Style="{StaticResource FxTabButton}" Tag="Catalog" IsChecked="True" Checked="Tab_Checked">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="☰" Margin="0,-2,6,0" VerticalAlignment="Center" />
+                        <TextBlock Text="Catalog" VerticalAlignment="Center" />
+                    </StackPanel>
+                </RadioButton>
+                <RadioButton x:Name="DownloadsTab" Style="{StaticResource FxTabButton}" Tag="Downloads" Checked="Tab_Checked">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="⭳" FontWeight="Bold"  Margin="0,-2,6,0" VerticalAlignment="Center" />
+                        <TextBlock Text="Downloads" VerticalAlignment="Center" />
+                    </StackPanel>
+                </RadioButton>
+                <RadioButton x:Name="InstalledTab" Style="{StaticResource FxTabButton}" Tag="Installed" Checked="Tab_Checked">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="&#xec74;" FontFamily="{DynamicResource FontIcoFont}" Margin="0,-2,6,0" VerticalAlignment="Center" />
+                        <TextBlock Text="Installed" VerticalAlignment="Center" />
+                    </StackPanel>
+                </RadioButton>
+                <RadioButton x:Name="SettingsTab" Style="{StaticResource FxTabButton}" Tag="Settings" Checked="Tab_Checked">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="🛠"  Margin="0,-2,6,0" VerticalAlignment="Center" />
+                        <TextBlock Text="Settings" VerticalAlignment="Center" />
+                    </StackPanel>
+                </RadioButton>
+            </StackPanel>
+        </Border>
+        <Grid Grid.Row="1" Margin="0">
+            <Grid x:Name="CatalogGrid" Visibility="Visible">
+                <views:CatalogView x:Name="CatalogCtrl" />
+            </Grid>
+            <Grid x:Name="DownloadsGrid" Visibility="Collapsed">
+                <views:DownloadsView x:Name="DownloadsCtrl" />
+            </Grid>
+            <Grid x:Name="InstalledGrid" Visibility="Collapsed">
+                <views:InstalledView x:Name="InstalledCtrl" />
+            </Grid>
+            <Grid x:Name="SettingsGrid" Visibility="Collapsed">
+                <views:SettingsView x:Name="SettingsCtrl" />
+            </Grid>
+        </Grid>
+        <Border Grid.RowSpan="2" IsHitTestVisible="False" Panel.ZIndex="-1" Background="#0D000000">
+            <Image x:Name="SidebarHeroImage" Stretch="UniformToFill" Opacity="0.4" />
+        </Border>
+        <views:ScreenshotViewer x:Name="ScreenshotViewerCtrl" Grid.RowSpan="2" Panel.ZIndex="100" />
+    </Grid>
+</UserControl>

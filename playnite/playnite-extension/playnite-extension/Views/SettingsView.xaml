@@ -1,0 +1,39 @@
+<UserControl x:Class="GamesNexus.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+            <TextBlock Text="&#xefb0;" FontFamily="{DynamicResource FontIcoFont}" FontSize="24" Foreground="White" VerticalAlignment="Center" Margin="0,-2,8,0" />
+            <TextBlock Text="Settings" FontSize="24" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" />
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel MaxWidth="600" HorizontalAlignment="Left">
+                <TextBlock Text="API Endpoint URL" Foreground="#CCFFFFFF" Margin="0,0,0,8" />
+                <TextBox x:Name="ApiUrlBox" Text="{Binding SettingsVM.ApiUrl}" Style="{DynamicResource FxInput}" Margin="0,0,0,16" />
+                <Button Click="SaveApiUrl_Click" Style="{DynamicResource FxActionBtn}" HorizontalAlignment="Left" Padding="16,8" Margin="0,0,0,16">
+                    <TextBlock Text="Save" VerticalAlignment="Center" />
+                </Button>
+                <TextBlock Text="Default Install Directory" Foreground="#CCFFFFFF" Margin="0,0,0,8" />
+                <TextBox x:Name="InstallPathBox" Text="{Binding SettingsVM.InstallDir}" Style="{DynamicResource FxInput}" Margin="0,0,0,16" />
+                <Button Click="BrowseInstallPath_Click" Style="{DynamicResource FxActionBtn}" HorizontalAlignment="Left" Padding="16,8" Margin="0,0,0,16">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Browse..." VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <CheckBox x:Name="AutoMagnetBox" IsChecked="{Binding SettingsVM.AutoOpenMagnet}" Content="Open magnet links automatically" Foreground="White" Margin="0,0,0,24" />
+                <CheckBox x:Name="AskDestBox" IsChecked="{Binding SettingsVM.AskDownloadDestination}" Content="Ask me for destination every time I download" Foreground="White" Margin="0,0,0,16" />
+                <TextBlock Text="Default Cache Destination" Foreground="#CCFFFFFF" Margin="0,0,0,8" />
+                <TextBox x:Name="CachePathBox" Text="{Binding SettingsVM.CacheDestination}" Style="{DynamicResource FxInput}" Margin="0,0,0,16" />
+                <TextBlock Text="Max Cache Size (GB)" Foreground="#CCFFFFFF" Margin="0,0,0,8" />
+                <TextBox x:Name="MaxCacheBox" Text="{Binding SettingsVM.MaxCacheGb}" Style="{DynamicResource FxInput}" Margin="0,0,0,24" />
+                <Button Click="ClearCache_Click" Style="{DynamicResource FxActionBtn}" HorizontalAlignment="Left" Padding="16,8" Margin="0,0,0,16">
+                    <TextBlock Text="Clear Cache" VerticalAlignment="Center" />
+                </Button>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

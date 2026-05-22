@@ -1,0 +1,5 @@
+GameDB/
+dist/
+node_modules/
+.env
+Resources/

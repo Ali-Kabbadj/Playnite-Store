@@ -1,0 +1,47 @@
+<UserControl x:Class="GamesNexus.Views.InstalledView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16" VerticalAlignment="Center">
+            <TextBlock Text="&#xec74;" FontFamily="{DynamicResource FontIcoFont}" FontSize="24" Foreground="White" VerticalAlignment="Center" Margin="0,-2,8,0" />
+            <TextBlock Text="Installed Games" FontSize="24" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" />
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ItemsControl x:Name="InstalledGamesList">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border CornerRadius="12" Margin="0,4" Background="{DynamicResource FxCardBg}" Padding="16">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding Title}" FontSize="16" Foreground="White" VerticalAlignment="Center" FontWeight="SemiBold" />
+                                <TextBlock Grid.Column="1" Text="{Binding InstallDir}" Foreground="{DynamicResource FxTextSubtle}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="8,0" />
+                                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                    <Button Click="InstalledPlay_Click" Tag="{Binding}" Style="{DynamicResource FxActionBtn}" Margin="0,0,4,0">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="&#xec74;" FontFamily="{DynamicResource FontIcoFont}" Margin="0,-2,6,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="Play" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Click="UninstallGame_Click" Tag="{Binding}" Style="{DynamicResource FxActionBtn}" Foreground="#FF453A">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="&#xec53;" FontFamily="{DynamicResource FontIcoFont}" Margin="0,-2,6,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="Uninstall" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

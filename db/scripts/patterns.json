@@ -1,0 +1,30 @@
+{
+  "groups": [
+    "fitgirl", "dodi", "xatab", "elamigos", "darkzer0", "0xdeadc0de", "0xdeadcode", 
+    "dixen18", "dinobytes", "selezen", "fckdrm", "hi2u", "vrex", "badkarma", 
+    "masstorr", "1nomok", "canek77", "rz1911", "wanterlude", "fenixx", "tenoke", 
+    "skidrow", "codex", "plaza", "tinyiso", "simplex", "ali213", "hoodlum", 
+    "cpy", "empress", "goldberg", "igggames", "rg\\s*mechanics", "mechanics",
+    "decepticon", "darck", "chovka", "darksiders"
+  ],
+  "jargon": [
+    "repack", "rip", "free download", "pre-installed", "preinstalled", "portable", 
+    "clean files", "лицензия", "папка игры", "коллекционное издание", "архив", 
+    "сборник", "антология", "дилогия", "трилогия", "новый диск", "акелла", 
+    "удалено", "руссобит-м", "демоверсия", "софтклаб", "некондиционная раздача",
+    "let'splay", "let'sрlay", "incl\\.", "incl", "included", "includes",
+    "multi\\d+", "multi\\d*-\\d+", "alldlcs?", "dlcs?", "dlc", "xbox360", "ps3", 
+    "ps2", "psp", "pc", "рс", "mac", "linux", "drmfree", "drm-free", "drm free", 
+    "crackfix", "hotfix", "webrip", "hdrip", "steam-rip", "steamrip", "gog", "steam", 
+    "uncensored", "unrated", "полная версия", "все dlc", "встроен", "вшит", "кряк", 
+    "таблетка", "взломана", "пиратка", "русская озвучка", "crack", "cracked", 
+    "repack\\d*", "alldlc", "drm", "multi", "by", "от"
+  ],
+  "editions": [
+    "digital deluxe edition", "deluxe edition", "premium edition", "ultimate edition",
+    "definitive edition", "game of the year edition", "goty edition", "goty", 
+    "enhanced edition", "special edition", "director's cut", "anniversary edition", 
+    "complete edition", "standard edition", "collector's edition", "supporter edition",
+    "gold edition", "platinum edition", "legendary edition", "founders edition", "remastered edition"
+  ]
+}

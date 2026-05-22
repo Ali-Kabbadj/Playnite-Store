@@ -1,0 +1,191 @@
+<UserControl x:Class="GamesNexus.Views.CatalogView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:views="clr-namespace:GamesNexus.Views">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
+
+    <Grid MouseDown="CatalogGrid_MouseDown">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#4444445f" Padding="8" Margin="0,0,0,8" Panel.ZIndex="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="GenreFilterBtn" Grid.Column="0" MinWidth="130" Margin="0,0,4,0" Style="{DynamicResource FxActionBtn}" Height="34" Click="GenreFilterBtn_Click">
+                    <TextBlock x:Name="GenreFilterText" Text="All Genres" VerticalAlignment="Center" />
+                </Button>
+                <Popup x:Name="GenreFilterPopup" PlacementTarget="{Binding ElementName=GenreFilterBtn}" Placement="Bottom" StaysOpen="False" PopupAnimation="Fade">
+                    <Border Background="#1A1A2E" BorderBrush="#33FFFFFF" BorderThickness="1" CornerRadius="12" Padding="8" MaxHeight="400" Width="300">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <TextBox x:Name="GenreSearchBox" Grid.Row="0" TextChanged="GenreSearchBox_TextChanged" Margin="0,0,0,6" />
+                            <ListBox x:Name="GenreFilterList" Grid.Row="1" BorderThickness="0" Background="Transparent" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="Focusable" Value="False" />
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+                        </Grid>
+                    </Border>
+                </Popup>
+
+                <ComboBox x:Name="SourceFilter" Grid.Column="1" MinWidth="140" Margin="0,0,4,0" SelectionChanged="SourceFilter_SelectionChanged">
+                    <ComboBoxItem Content="All Repackers" IsSelected="True" Tag="" />
+                </ComboBox>
+
+                <ComboBox x:Name="PlatformFilter" Grid.Column="2" MinWidth="180" Margin="0,0,4,0" SelectionChanged="PlatformFilter_SelectionChanged" />
+
+                <CheckBox x:Name="HasRepacksCheckbox" Grid.Column="3" Content="Only with Repacks" IsChecked="True" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#CCFFFFFF" Checked="HasRepacksCheckbox_Changed" Unchecked="HasRepacksCheckbox_Changed" />
+
+                <StackPanel Grid.Column="4" Orientation="Horizontal" Margin="0,0,8,0">
+                    <ComboBox x:Name="SortByField" MinWidth="70" SelectionChanged="SortBy_Changed">
+                        <ComboBoxItem Content="Name" />
+                        <ComboBoxItem Content="Release" IsSelected="True" />
+                        <ComboBoxItem Content="Upload" />
+                    </ComboBox>
+                    <ComboBox x:Name="SortOrderField" MinWidth="50" Margin="4,0,0,0" SelectionChanged="SortOrder_Changed">
+                        <ComboBoxItem Content="Asc" />
+                        <ComboBoxItem Content="Desc" IsSelected="True" />
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Column="5" Orientation="Horizontal" Margin="4,0" VerticalAlignment="Center">
+                    <TextBlock Foreground="#99FFFFFF" VerticalAlignment="Center" Margin="4,0" Text="Zoom" />
+                    <TextBlock Text="&#x2212;" Foreground="#99FFFFFF" FontSize="15" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,3,0" />
+                    <Slider x:Name="ZoomSlider" Minimum="0.8" Maximum="2" Value="1.0" Width="80" VerticalAlignment="Center" SmallChange="0.1" LargeChange="0.2" TickFrequency="0.1" IsSnapToTickEnabled="True" ValueChanged="ZoomSlider_ValueChanged" />
+                    <TextBlock Text="&#x002B;" Foreground="#99FFFFFF" FontSize="15" FontWeight="Bold" VerticalAlignment="Center" Margin="3,0,0,0" />
+                    <TextBlock x:Name="GamesZoomTransformText" Text="100%" Foreground="#99FFFFFF" VerticalAlignment="Center" Margin="4,0" />
+                </StackPanel>
+
+                <TextBox x:Name="SearchBox" Grid.Column="6" Margin="8,0,8,0" KeyUp="SearchBox_KeyUp" />
+                <TextBlock x:Name="StatusText" Grid.Column="7" Text="{Binding CatalogVM.StatusText}" Foreground="#99FFFFFF" VerticalAlignment="Center" Margin="0,10,2,0" />
+                <TextBlock x:Name="StatusTotalText" Grid.Column="8" Text="{Binding CatalogVM.StatusTotalText}" Foreground="#99FFFFFF" VerticalAlignment="Center" Margin="0,10,10,0" />
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="CatalogMainCol" Width="65*" MinWidth="200" />
+                <ColumnDefinition x:Name="SplitterCol" Width="0" />
+                <ColumnDefinition x:Name="SidebarCol" Width="0" />
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer Grid.Column="0" x:Name="GamesScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" ScrollChanged="GamesScrollViewer_ScrollChanged">
+                <ItemsControl x:Name="GamesList">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid IsItemsHost="True" Columns="{Binding GridColumns, RelativeSource={RelativeSource AncestorType=UserControl}}" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border CornerRadius="12" Cursor="Hand" Tag="{Binding}" MouseLeftButtonUp="GameCard_MouseUp" Height="{Binding CardHeight, RelativeSource={RelativeSource AncestorType=UserControl}}" Margin="{Binding CardMargin, RelativeSource={RelativeSource AncestorType=UserControl}}" RenderTransformOrigin="0.5,0.5">
+                                <Border.RenderTransform>
+                                    <ScaleTransform ScaleX="1" ScaleY="1" />
+                                </Border.RenderTransform>
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="#1AFFFFFF" />
+                                        <Setter Property="BorderThickness" Value="2" />
+                                        <Setter Property="BorderBrush" Value="Transparent" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                <Setter Property="BorderBrush" Value="#0379FF" />
+                                                <Setter Property="Background" Value="#330379FF" />
+                                            </DataTrigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Trigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" To="1.04" Duration="0:0:0.15" />
+                                                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" To="1.04" Duration="0:0:0.15" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.EnterActions>
+                                                <Trigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" To="1.0" Duration="0:0:0.15" />
+                                                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" To="1.0" Duration="0:0:0.15" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.ExitActions>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Border CornerRadius="10" ClipToBounds="True">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Border Grid.Row="0" CornerRadius="10,10,0,0"  Background="white" Padding="8,6">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                                                    <Image Source="{Binding PlatformIcon}" Width="16" Height="16" Visibility="{Binding HasPlatformIcon, Converter={StaticResource BoolToVis}}" RenderOptions.BitmapScalingMode="HighQuality" />
+                                                    <Border Background="#0379FF" CornerRadius="4" Padding="4,2" Visibility="{Binding HasPlatformText, Converter={StaticResource BoolToVis}}">
+                                                        <TextBlock Text="{Binding PlatformBadge}" Foreground="White" FontSize="10" FontWeight="Bold" />
+                                                    </Border>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                                    <Border Background="#33FFFFFF" CornerRadius="4" Padding="4,2" Visibility="{Binding HasPublisherText, Converter={StaticResource BoolToVis}}">
+                                                        <TextBlock Text="{Binding PublisherBadge}" Foreground="White" FontSize="9" />
+                                                    </Border>
+                                                    <ItemsControl ItemsSource="{Binding PublisherIcons}" Visibility="{Binding HasPublisherIcons, Converter={StaticResource BoolToVis}}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <StackPanel Orientation="Horizontal" />
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Image Source="{Binding}" Width="16" Height="16" Margin="4,0,0,0" RenderOptions.BitmapScalingMode="HighQuality" />
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                        <Border Grid.Row="1" Background="#14FFFFFF">
+                                            <Image Source="{Binding CoverImageBitmap}" Stretch="UniformToFill" />
+                                        </Border>
+                                        <Border CornerRadius="0,0,10,10" Grid.Row="2" Background="#ffffff" Padding="12">
+                                            <TextBlock Text="{Binding Name}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Foreground="Black" FontSize="13" FontWeight="SemiBold" TextAlignment="Center" />
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <GridSplitter Grid.Column="1" x:Name="CatalogViewSpliter" Width="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#23232360" Cursor="SizeWE" />
+            <views:GameDetailSidebar Grid.Column="2" x:Name="SidebarCtrl" />
+        </Grid>
+    </Grid>
+</UserControl>
