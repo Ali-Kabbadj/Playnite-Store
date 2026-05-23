@@ -27,9 +27,12 @@
       <None Remove="Resources\Icons\**" />
       <Page Remove="Resources\Icons\**" />
     </ItemGroup>
-    <ItemGroup>
+<ItemGroup>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-        <PackageReference Include="PlayniteSDK" Version="6.16.0" />
+        <PackageReference Include="PlayniteSDK" Version="6.16.0">
+            <PrivateAssets>all</PrivateAssets>
+            <ExcludeAssets>runtime</ExcludeAssets>
+        </PackageReference>
         <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     </ItemGroup>
     <ItemGroup>
