@@ -3,12 +3,17 @@ name: Publish Playnite Extension
 on:
   push:
     tags:
-      - "v*" # Triggers on tags like v1.0.0, v1.1, etc.
+      - 'v*' # Triggers on tags like v1.0.0, v1.1, etc.
+
+# --- THIS IS THE NEW PART ---
+permissions:
+  contents: write # Grants permission to create releases and upload files
+# ----------------------------
 
 jobs:
   build-and-publish:
     runs-on: windows-latest
-
+    
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -20,7 +25,6 @@ jobs:
         uses: NuGet/setup-nuget@v2
 
       - name: Inject Production API URL
-        # If PROD_API_URL secret exists, replace the localhost URL in Constants.cs
         env:
           PROD_API_URL: ${{ secrets.PROD_API_URL }}
         run: |
@@ -45,26 +49,23 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Authenticate using the built-in GitHub Actions token
           $Headers = @{
               "Authorization" = "Bearer $env:GITHUB_TOKEN"
               "User-Agent" = "GitHub-Actions"
           }
-
+          
           $Release = Invoke-RestMethod -Uri "https://api.github.com/repos/JosefNemec/Playnite/releases/latest" -Headers $Headers
-
-          # Find the portable .7z file
+          
           $Asset = $Release.assets | Where-Object { $_.name -match "\.7z$" } | Select-Object -First 1
-
+          
           if (-not $Asset) {
-             Write-Error "Could not find the Playnite Portable .7z asset. Assets found: $($Release.assets.name -join ', ')"
+             Write-Error "Could not find the Playnite Portable .7z asset."
              exit 1
           }
-
+          
           Write-Host "Found Asset: $($Asset.name) at $($Asset.browser_download_url)"
           Invoke-WebRequest -Uri $Asset.browser_download_url -OutFile "Playnite.7z"
-
-          # GitHub Windows runners have 7z pre-installed. We use it to extract the .7z file.
+          
           7z x Playnite.7z -oPlayniteToolbox -y
         shell: powershell
 
