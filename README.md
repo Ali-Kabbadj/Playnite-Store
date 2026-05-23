@@ -37,6 +37,33 @@ GamesNexus relies on community curation to keep game metadata and repack links c
 
 ![Admin Panel Dashboard](./docs/assets/admin-panel-dashboard.png)
 
+### Local Database Setup (Recreation)
+
+To recreate the `playnitedb` database locally using the repository dump, follow these steps (insure you have postgress installed):
+
+1. **Install Git LFS** (if not already installed) and pull the latest changes to ensure you have the actual dump file rather than the LFS pointer file:
+
+   ```bash
+   git lfs pull
+   ```
+
+2. **Navigate to the database directory**:
+
+   ```bash
+   cd db
+   ```
+
+3. **Create a fresh, empty PostgreSQL database**:
+
+   ```bash
+   createdb -U postgres playnitedb
+   ```
+
+4. **Restore the database schema and data** from the dump file:
+   ```bash
+   pg_restore -U postgres -d playnitedb playnitedb.dump
+   ```
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
