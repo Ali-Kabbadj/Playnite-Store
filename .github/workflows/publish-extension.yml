@@ -19,6 +19,18 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
+      - name: Sanitize Project File
+        # This aggressively removes line breaks/spaces inside critical XML tags caused by IDE formatters
+        run: |
+          $File = "playnite/playnite-extension/playnite-extension/GamesNexus.csproj"
+          $Content = Get-Content -Raw $File
+          $Content = [regex]::Replace($Content, '(?i)<TargetFramework>\s*(.*?)\s*</TargetFramework>', '<TargetFramework>$1</TargetFramework>')
+          $Content = [regex]::Replace($Content, '(?i)<AssemblyName>\s*(.*?)\s*</AssemblyName>', '<AssemblyName>$1</AssemblyName>')
+          $Content = [regex]::Replace($Content, '(?i)<RootNamespace>\s*(.*?)\s*</RootNamespace>', '<RootNamespace>$1</RootNamespace>')
+          Set-Content -Path $File -Value $Content
+          Write-Host "Project file sanitized successfully."
+        shell: powershell
+
       - name: Inject Production API URL
         env:
           PROD_API_URL: ${{ secrets.PROD_API_URL }}
@@ -34,7 +46,6 @@ jobs:
           }
         shell: powershell
 
-      # FIX: Use MSBuild native restore directly on the .csproj, bypassing the buggy nuget.exe & .slnx parsing
       - name: Restore Packages
         run: msbuild playnite/playnite-extension/playnite-extension/GamesNexus.csproj -t:restore /p:Configuration=Release
 
