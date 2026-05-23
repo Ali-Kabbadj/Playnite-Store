@@ -57,7 +57,7 @@ To recreate the `playnitedb` database locally using the repository dump, follow 
 
 4. **Restore the database schema and data** from the dump file:
    ```bash
-   pg_restore -U postgres -d playnitedb playnitedb.dump
+   pg_restore -U postgres -d playnitedb db/playnitedb.dump
    ```
 
 ## License
