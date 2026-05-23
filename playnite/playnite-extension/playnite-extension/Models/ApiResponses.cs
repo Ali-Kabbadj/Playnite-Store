@@ -20,7 +20,7 @@ namespace GamesNexus.Models
 
     public class GamesNexusAppSettings
     {
-        public string ApiUrl { get; set; }
+        public string ApiUrl { get; set; }= "http://127.0.0.1:3456";
         public string InstallDir { get; set; }
         public bool AskDownloadDestination { get; set; } = true;
         public string CacheDestination { get; set; }
