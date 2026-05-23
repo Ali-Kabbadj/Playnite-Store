@@ -13,7 +13,7 @@ namespace GamesNexus.ViewModels
 
         public string ApiUrl
         {
-            get => _settings?.ApiUrl ?? "http://localhost:3456";
+            get => _settings?.ApiUrl ?? Core.Constants.DefaultApiUrl;
             set
             {
                 if (_settings != null) _settings.ApiUrl = value;

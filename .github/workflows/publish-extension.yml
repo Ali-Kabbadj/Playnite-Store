@@ -1,0 +1,67 @@
+name: Publish Playnite Extension
+
+on:
+  push:
+    tags:
+      - "v*" # Triggers on tags like v1.0.0, v1.1, etc.
+
+jobs:
+  build-and-publish:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Inject Production API URL
+        # If PROD_API_URL secret exists, replace the localhost URL in Constants.cs
+        env:
+          PROD_API_URL: ${{ secrets.PROD_API_URL }}
+        run: |
+          if ($env:PROD_API_URL) {
+            $ConstantsFile = "playnite/playnite-extension/playnite-extension/Core/Constants.cs"
+            $Content = Get-Content $ConstantsFile
+            $Content = $Content -replace 'http://localhost:3456', $env:PROD_API_URL
+            Set-Content -Path $ConstantsFile -Value $Content
+            Write-Host "Injected Production URL: $env:PROD_API_URL"
+          } else {
+            Write-Host "No PROD_API_URL secret found. Building with localhost default."
+          }
+        shell: powershell
+
+      - name: Restore NuGet Packages
+        run: nuget restore playnite/playnite-extension/playnite-extention.slnx
+
+      - name: Build Extension (Release Mode)
+        run: msbuild playnite/playnite-extension/playnite-extension/GamesNexus.csproj /p:Configuration=Release
+
+      - name: Download Playnite Toolbox
+        # Automatically finds and downloads the latest portable Playnite version to extract the Toolbox
+        run: |
+          $Release = Invoke-RestMethod -Uri "https://api.github.com/repos/JosefNemec/Playnite/releases/latest"
+          $Asset = $Release.assets | Where-Object { $_.name -match "Playnite[0-9\.]+\.zip" }
+          Invoke-WebRequest -Uri $Asset.browser_download_url -OutFile "Playnite.zip"
+          Expand-Archive "Playnite.zip" -DestinationPath "PlayniteToolbox"
+        shell: powershell
+
+      - name: Pack Extension (.pext)
+        run: |
+          mkdir packed_extension
+          .\PlayniteToolbox\Toolbox.exe pack "playnite/playnite-extension/playnite-extension/bin/Release" "packed_extension"
+        shell: powershell
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: packed_extension/*.pext
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
