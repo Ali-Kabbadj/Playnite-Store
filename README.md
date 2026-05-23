@@ -7,7 +7,6 @@
 It consists of a blazing-fast Playnite extension, a high-performance caching API, and a robust Admin Panel for community-driven data curation.
 
 ![GamesNexus Playnite Integration](./docs/assets/playnite-extension-preview.png)
-_(Placeholder: Add a screenshot of the Playnite extension showing game details and downloads here)_
 
 ## Features
 
