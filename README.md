@@ -1,4 +1,4 @@
-# 🎮 GamesNexus (Playnite-Store)
+# GamesNexus (Playnite-Store ... still thinking of a name lol)
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
@@ -11,16 +11,14 @@ It consists of a blazing-fast Playnite extension, a high-performance caching API
 ![GamesNexus Playnite Integration](./docs/assets/playnite-extension-preview.png)
 _(Placeholder: Add a screenshot of the Playnite extension showing game details and downloads here)_
 
-## 🌟 Features
+##  Features
 
 - **In-Client Downloads:** Browse, discover, and download repacks directly inside Playnite.
 - **Smart Matching:** Automatically links repacks from various sources to their official GameDB entries.
 - **Blazing Fast API:** Node.js + Fastify + Redis backend ensuring instant search and data retrieval.
 - **Community Curation:** A dedicated React-based Admin panel for moderating repacks, fixing metadata, and managing sources.
 
-## 🏗️ Repository Structure
-
-This is a monorepo containing the entire ecosystem.
+##  Repository Structure
 
 | Component              | Path                           | Description                                                  | Tech Stack                |
 | :--------------------- | :----------------------------- | :----------------------------------------------------------- | :------------------------ |
@@ -30,9 +28,6 @@ This is a monorepo containing the entire ecosystem.
 | **Admin API**          | `/db/admin_panel/backend`      | The read/write API for managing the database.                | Python, Flask, PostgreSQL |
 | **ETL Scripts**        | `/db/scripts`                  | Python scripts for scraping, normalizing, and auditing data. | Python, Regex, Psycopg2   |
 
-## 🚀 Getting Started for Contributors
-
-We welcome contributions of all skill levels! Whether you know C#, TypeScript, Python, or React, there is a place for you here.
 
 1. **Architecture & Master Plan:** Read [`docs/ARCHITECTURE_AND_PIPELINE.md`](./docs/ARCHITECTURE_AND_PIPELINE.md) to understand how the pieces fit together.
 2. **Backend API:** Check out the [API Setup Guide (`/api/README.md`)](./api/README.md).
@@ -40,7 +35,7 @@ We welcome contributions of all skill levels! Whether you know C#, TypeScript, P
 4. **Playnite Extension:** Read the [Extension Dev Guide (`/playnite/playnite-extension/README.md`)](./playnite/playnite-extension/README.md).
 5. **Python ETL Scripts:** Read the [Database Scripts Guide (`/db/scripts/README.md`)](./db/scripts/README.md).
 
-## 🤝 Community & Data Moderation
+##  Community & Data Moderation
 
 GamesNexus relies on community curation to keep game metadata and repack links clean and organized. If you want to help us sort orphan repacks, assign genres, or submit new repack sources, check out our **[Community Pipeline Guide](./docs/ARCHITECTURE_AND_PIPELINE.md#community-data-pipeline)**.
 
