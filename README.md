@@ -4,22 +4,15 @@
 
 ![GamesNexus Playnite Integration](./docs/assets/playnite-extension-preview.png)
 
-## Features
-
-- **In-Client Downloads:** Browse, discover, and download repacks directly inside Playnite.
-- **Smart Matching:** Automatically links repacks from various sources to their official GameDB entries.
-- **Blazing Fast API:** Node.js + Fastify + Redis backend ensuring instant search and data retrieval.
-- **Community Curation:** A dedicated React-based Admin panel for moderating repacks, fixing metadata, and managing sources.
-
 ## Repository Structure
 
-| Component              | Path                           | Description                                                  | Tech Stack                |
-| :--------------------- | :----------------------------- | :----------------------------------------------------------- | :------------------------ |
-| **Playnite Extension** | `/playnite/playnite-extension` | The C# WPF Add-on that users install in Playnite.            | C#, WPF, .NET             |
-| **Public API**         | `/api`                         | The read-only API serving data to the Playnite extension.    | Node.js, Fastify, Redis   |
-| **Admin Panel UI**     | `/db/admin_panel/frontend`     | The dashboard for community moderators.                      | React, Vite, TailwindCSS  |
-| **Admin API**          | `/db/admin_panel/backend`      | The read/write API for managing the database.                | Python, Flask, PostgreSQL |
-| **ETL Scripts**        | `/db/scripts`                  | Python scripts for scraping, normalizing, and auditing data. | Python, Regex, Psycopg2   |
+| Component              | Path                           | Description                                                  | 
+| :--------------------- | :----------------------------- | :----------------------------------------------------------- | 
+| **Playnite Extension** | `/playnite/playnite-extension` | The C# WPF Add-on that users install in Playnite.            |
+| **Public API**         | `/api`                         | The read-only API serving data to the Playnite extension.    | 
+| **Admin Panel UI**     | `/db/admin_panel/frontend`     | The dashboard for community moderators.                      |
+| **Admin API**          | `/db/admin_panel/backend`      | The read/write API for managing the database.                | 
+| **ETL Scripts**        | `/db/scripts`                  | Python scripts for scraping, normalizing, and auditing data. | 
 
 1. **Architecture & Master Plan:** Read [`docs/ARCHITECTURE_AND_PIPELINE.md`](./docs/ARCHITECTURE_AND_PIPELINE.md) to understand how the pieces fit together.
 2. **Backend API:** Check out the [API Setup Guide (`/api/README.md`)](./api/README.md).
@@ -29,11 +22,11 @@
 
 ## Community & Data Moderation
 
-GamesNexus relies on community curation to keep game metadata and repack links clean and organized. If you want to help us sort orphan repacks, assign genres, or submit new repack sources, check out our **[Community Pipeline Guide](./docs/ARCHITECTURE_AND_PIPELINE.md#community-data-pipeline)**.
+GamesNexus hopes to rely on community curation to keep game metadata and repack links clean and organized. If you want to help us sort orphan repacks, assign genres, or submit new repack sources, check out our **[Community Pipeline Guide](./docs/ARCHITECTURE_AND_PIPELINE.md#community-data-pipeline)**.
 
 ![Admin Panel Dashboard](./docs/assets/admin-panel-dashboard.png)
 
-### Local Database Setup (Recreation)
+### Note : Local Database Setup (Recreation)
 
 To recreate the `playnitedb` database locally using the repository dump, follow these steps (insure you have postgress installed):
 
@@ -60,6 +53,3 @@ To recreate the `playnitedb` database locally using the repository dump, follow 
    pg_restore -U postgres -d playnitedb db/playnitedb.dump
    ```
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
