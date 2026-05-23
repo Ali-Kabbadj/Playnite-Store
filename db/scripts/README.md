@@ -1,10 +1,10 @@
-# 🐍 Database ETL & Audit Scripts
+#  Database ETL & Audit Scripts
 
 [← Back to Root README](../../README.md) | [Read Architecture](../../docs/ARCHITECTURE_AND_PIPELINE.md)
 
 This folder contains the Python scripts responsible for the **ETL (Extract, Transform, Load)** pipeline. Because repack titles are notoriously messy, we use heavy Regex and smart PostgreSQL matching to normalize the data and link repacks to official games.
 
-## 📜 Scripts Overview
+##  Scripts Overview
 
 ### Database Building & Initialization
 
@@ -23,7 +23,7 @@ This folder contains the Python scripts responsible for the **ETL (Extract, Tran
 - `test_normalization.py`: Dumps an SQLite database showing exactly what our normalization regex removed from every single title, allowing easy inspection in an SQL IDE.
 - `db_full_report.py`: Generates a massive `.txt` schema dump of your Postgres database, including row counts, indexes, and constraints.
 
-## 🚀 Usage
+##  Usage
 
 To run any script, ensure you have your Postgres credentials updated inside the script's `DB_PARAMS` dictionary.
 
