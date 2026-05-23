@@ -1,5 +1,4 @@
-
-#  GamesNexus Public API
+# GamesNexus Public API
 
 [← Back to Root README](../README.md) | [Read Architecture](../docs/ARCHITECTURE_AND_PIPELINE.md)
 
@@ -69,7 +68,3 @@ All endpoints are prefixed with `/api/v1/`.
 ## 🧠 Caching Strategy
 
 To prevent hammering the database, responses are aggressively cached using Redis. Global lists (like `/genres`) are cached for 24 hours, while individual game details are cached for 1 hour. If you update data via the Admin Panel, the caches will eventually expire and pull the fresh data.
-
-```
-
-```

@@ -2,4 +2,39 @@ GameDB/
 dist/
 node_modules/
 .env
+.env.local
+.DS_Store
 Resources/
+# --- Node / API & Frontend ---
+node_modules/
+dist/
+dist-ssr/
+build/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --- Python / Admin Backend & Scripts ---
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+*.sqlite
+db_schema.txt
+db_full_report.txt
+smart_audit_report.txt
+title_analysis_report.txt
+leftover_words_summary.txt
+
+# --- C# / Playnite Extension ---
+.vs/
+[Dd]ebug/
+[Rr]elease/
+x64/
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+packages/

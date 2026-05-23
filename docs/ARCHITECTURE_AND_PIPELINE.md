@@ -1,4 +1,4 @@
-#  Architecture, Hosting, and Community Pipeline
+# Architecture, Hosting, and Community Pipeline
 
 This document explains the infrastructure behind GamesNexus, how it is deployed in production, and how the community works together to maintain the database.
 
@@ -11,8 +11,36 @@ GamesNexus is a multi-tier architecture designed to separate the heavy, write-in
 - **Public API (Node.js/Fastify):** A highly scalable, read-only endpoint consumed by the Playnite extension.
 - **Admin Panel (Flask/React):** A secured dashboard where moderators can perform CRUD operations on the database.
 
-![Architecture Diagram](./assets/architecture-diagram.png)
-_(Placeholder: Create a simple flowchart showing Playnite -> Node API -> Redis/Postgres <- Flask <- React Admin)_
+```mermaid
+flowchart TD
+    subgraph Client [Client Side]
+        P[Playnite Desktop App] -->|Installs| E(GamesNexus Extension C#)
+    end
+
+    subgraph Backend [Public Backend]
+        E <-->|REST API JSON| API(Node.js / Fastify API)
+        API <-->|Reads / Caches| R[(Redis Cache)]
+        API -->|Reads| DB[(PostgreSQL Database)]
+    end
+
+    subgraph Curation [Community Admin Panel]
+        UI(React / Vite Frontend) <-->|REST API JSON| F(Flask Admin API)
+        F <-->|Reads / Writes| DB
+    end
+
+    subgraph ETL [Data Pipeline]
+        S[Web Scrapers / GameDB] --> ETL_Scripts(Python ETL Scripts)
+        ETL_Scripts -->|Normalizes & Writes| DB
+    end
+
+    classDef extension fill:#f96,stroke:#333,stroke-width:2px;
+    classDef database fill:#3b82f6,stroke:#333,stroke-width:2px,color:#fff;
+    classDef api fill:#10b981,stroke:#333,stroke-width:2px,color:#fff;
+
+    class E extension;
+    class DB,R database;
+    class API,F api;
+```
 
 ---
 
@@ -87,8 +115,29 @@ We use the **Admin Panel** to crowdsource the cleanup of orphans.
    - They search for the actual game in the "Games" panel.
    - _Action:_ Select the orphan repacks, click the target game, and press **"Assign to Game"**.
 
-   ![Assign Repacks Workflow](./assets/admin-assign-repacks.png)
-   _(Placeholder: Screenshot of the Admin UI showing checked repacks being assigned to a game)_
+   ```mermaid
+   sequenceDiagram
+    participant Web as Scraper
+    participant DB as PostgreSQL DB
+    participant Mod as Community Moderator
+    participant Admin as React Admin Panel
+
+    Web->>DB: Inserts new parsed Repack
+    DB-->>DB: Triggers Trigram Auto-Match
+    alt Auto-Match Fails
+        DB->>DB: Flags Repack as "Orphan"
+    end
+
+    Mod->>Admin: Opens "Orphan Repacks" View
+    Admin->>DB: Fetch Orphans
+    DB-->>Admin: Returns List
+
+    Mod->>Admin: Selects Repack + Target Game
+    Mod->>Admin: Clicks "Assign to Game"
+    Admin->>DB: Updates game_repacks junction
+    DB-->>Admin: Success
+    Admin->>Mod: Shows Green Toast "Matched!"
+   ```
 
 3. **Game Creation:** If the game doesn't exist in our DB yet:
    - Moderators select the repacks and click **"Create New Game from Checked"**.

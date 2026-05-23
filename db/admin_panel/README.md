@@ -1,4 +1,4 @@
-#  GamesNexus Admin Panel
+# GamesNexus Admin Panel
 
 [← Back to Root README](../../README.md) | [Read Architecture](../../docs/ARCHITECTURE_AND_PIPELINE.md)
 
@@ -7,7 +7,6 @@ The Admin Panel is a unified dashboard for community moderators. It is used to c
 It consists of two parts: a **React + Vite Frontend** and a **Python Flask Backend**.
 
 ![Admin Panel Explorer](../../docs/assets/admin-panel-dashboard.png)
-_(Placeholder: Add screenshot of the Admin Panel UI)_
 
 ---
 

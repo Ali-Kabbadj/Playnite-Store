@@ -37,7 +37,6 @@ _(Placeholder: Add a screenshot of the Playnite extension showing game details a
 GamesNexus relies on community curation to keep game metadata and repack links clean and organized. If you want to help us sort orphan repacks, assign genres, or submit new repack sources, check out our **[Community Pipeline Guide](./docs/ARCHITECTURE_AND_PIPELINE.md#community-data-pipeline)**.
 
 ![Admin Panel Dashboard](./docs/assets/admin-panel-dashboard.png)
-_(Placeholder: Add a screenshot of the React Admin Panel showing the Repacks and Games explorer)_
 
 ## License
 
