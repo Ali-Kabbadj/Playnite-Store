@@ -3,17 +3,15 @@ name: Publish Playnite Extension
 on:
   push:
     tags:
-      - 'v*' # Triggers on tags like v1.0.0, v1.1, etc.
+      - "v*"
 
-# --- THIS IS THE NEW PART ---
 permissions:
-  contents: write # Grants permission to create releases and upload files
-# ----------------------------
+  contents: write
 
 jobs:
   build-and-publish:
     runs-on: windows-latest
-    
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -21,29 +19,40 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v2
-
       - name: Inject Production API URL
         env:
           PROD_API_URL: ${{ secrets.PROD_API_URL }}
         run: |
           if ($env:PROD_API_URL) {
             $ConstantsFile = "playnite/playnite-extension/playnite-extension/Core/Constants.cs"
-            $Content = Get-Content $ConstantsFile
-            $Content = $Content -replace 'http://localhost:3456', $env:PROD_API_URL
-            Set-Content -Path $ConstantsFile -Value $Content
-            Write-Host "Injected Production URL: $env:PROD_API_URL"
-          } else {
-            Write-Host "No PROD_API_URL secret found. Building with localhost default."
+            if (Test-Path $ConstantsFile) {
+                $Content = Get-Content $ConstantsFile
+                $Content = $Content -replace 'http://localhost:3456', $env:PROD_API_URL
+                Set-Content -Path $ConstantsFile -Value $Content
+                Write-Host "Injected Production URL: $env:PROD_API_URL"
+            }
           }
         shell: powershell
 
-      - name: Restore NuGet Packages
-        run: nuget restore playnite/playnite-extension/playnite-extention.slnx
+      # FIX: Use MSBuild native restore directly on the .csproj, bypassing the buggy nuget.exe & .slnx parsing
+      - name: Restore Packages
+        run: msbuild playnite/playnite-extension/playnite-extension/GamesNexus.csproj -t:restore /p:Configuration=Release
 
       - name: Build Extension (Release Mode)
         run: msbuild playnite/playnite-extension/playnite-extension/GamesNexus.csproj /p:Configuration=Release
+
+      - name: Clean Duplicate Assemblies
+        run: |
+          $ReleaseDir = "playnite/playnite-extension/playnite-extension/bin/Release"
+          $FilesToDelete = @("Playnite.SDK.dll", "Playnite.SDK.xml", "Newtonsoft.Json.dll", "System.ValueTuple.dll", "System.Net.Http.dll")
+          foreach ($File in $FilesToDelete) {
+              $Path = Join-Path $ReleaseDir $File
+              if (Test-Path $Path) {
+                  Remove-Item -Path $Path -Force
+                  Write-Host "Deleted duplicate assembly: $File"
+              }
+          }
+        shell: powershell
 
       - name: Download Playnite Toolbox
         env:
@@ -53,34 +62,19 @@ jobs:
               "Authorization" = "Bearer $env:GITHUB_TOKEN"
               "User-Agent" = "GitHub-Actions"
           }
-          
+
           $Release = Invoke-RestMethod -Uri "https://api.github.com/repos/JosefNemec/Playnite/releases/latest" -Headers $Headers
-          
           $Asset = $Release.assets | Where-Object { $_.name -match "\.7z$" } | Select-Object -First 1
-          
+
           if (-not $Asset) {
              Write-Error "Could not find the Playnite Portable .7z asset."
              exit 1
           }
-          
+
           Write-Host "Found Asset: $($Asset.name) at $($Asset.browser_download_url)"
           Invoke-WebRequest -Uri $Asset.browser_download_url -OutFile "Playnite.7z"
-          
-          7z x Playnite.7z -oPlayniteToolbox -y
-        shell: powershell
 
-      - name: Clean Duplicate Assemblies
-        # Playnite crashes if these DLLs are included in the extension folder
-        run: |
-          $ReleaseDir = "playnite/playnite-extension/playnite-extension/bin/Release"
-          $FilesToDelete = @("Playnite.SDK.dll", "Playnite.SDK.xml", "Newtonsoft.Json.dll", "System.ValueTuple.dll")
-          foreach ($File in $FilesToDelete) {
-              $Path = Join-Path $ReleaseDir $File
-              if (Test-Path $Path) {
-                  Remove-Item -Path $Path -Force
-                  Write-Host "Deleted duplicate assembly: $File"
-              }
-          }
+          7z x Playnite.7z -oPlayniteToolbox -y
         shell: powershell
 
       - name: Pack Extension (.pext)

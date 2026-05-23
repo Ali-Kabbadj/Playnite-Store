@@ -51,14 +51,12 @@
             TRACE
         </DefineConstants>
     </PropertyGroup>
-    <!-- THIS IS WHAT WAS MISSING: Prevents MSBuild from exploding on your image files -->
     <ItemGroup>
         <Compile Remove="Resources\Icons\**" />
         <EmbeddedResource Remove="Resources\Icons\**" />
         <None Remove="Resources\Icons\**" />
         <Page Remove="Resources\Icons\**" />
     </ItemGroup>
-    <!-- CLEAN, DEDUPLICATED DEPENDENCIES -->
     <ItemGroup>
         <PackageReference Include="Newtonsoft.Json" Version="10.0.3">
             <PrivateAssets>                
@@ -84,7 +82,6 @@
                 runtime
             </ExcludeAssets>
         </PackageReference>
-        <!-- Fixes the WPF temporary compiler bug for System.Net.Http -->
         <PackageReference Include="System.Net.Http" Version="4.3.4" />
     </ItemGroup>
     <ItemGroup>
