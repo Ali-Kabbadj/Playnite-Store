@@ -7,12 +7,7 @@
         <UseWPF>            
             true
         </UseWPF>
-        <RootNamespace>            
-            GamesNexus
-        </RootNamespace>
-        <AssemblyName>            
-            GamesNexus
-        </AssemblyName>
+        <!-- REMOVED AssemblyName and RootNamespace here to prevent IDE formatting bugs -->
         <OutputType>            
             Library
         </OutputType>
