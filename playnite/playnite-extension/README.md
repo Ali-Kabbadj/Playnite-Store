@@ -7,13 +7,13 @@ This is the C# WPF extension that integrates directly into the Playnite Desktop 
 ![Playnite Integration](../../docs/assets/playnite-extension-preview.png)
 _(Placeholder: Add screenshot of the extension running inside Playnite)_
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - **Language:** C#
 - **Framework:** WPF, .NET Framework 4.6.2 (Required by Playnite SDK)
 - **Architecture:** MVVM (Model-View-ViewModel)
 
-## 🚀 Local Development Setup
+##  Local Development Setup
 
 ### 1. Prerequisites
 
@@ -39,7 +39,7 @@ Get-Process Playnite.DesktopApp -ErrorAction SilentlyContinue | Stop-Process -Fo
 2. Set the "Start Action" to **Start external program** and point it to your Playnite executable (e.g., `C:\Playnite\Playnite.DesktopApp.exe`).
 3. Press `F5`. Visual Studio will compile the `.dll`, place it in the Playnite extensions folder, and launch Playnite with the debugger attached.
 
-## 📦 Packing for Release
+##  Packing for Release
 
 When you are ready to distribute an update to users, you need to pack the extension into a `.pext` file.
 
