@@ -1,5 +1,5 @@
 
-# ⚡ GamesNexus Public API
+#  GamesNexus Public API
 
 [← Back to Root README](../README.md) | [Read Architecture](../docs/ARCHITECTURE_AND_PIPELINE.md)
 
@@ -29,7 +29,6 @@ Navigate to the `/api` directory and install the dependencies:
 cd api
 npm install
 ```
-````
 
 ### 3. Environment Variables
 
