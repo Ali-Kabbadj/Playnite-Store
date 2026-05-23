@@ -42,6 +42,6 @@ GamesNexus relies on community curation to keep game metadata and repack links c
 ![Admin Panel Dashboard](./docs/assets/admin-panel-dashboard.png)
 _(Placeholder: Add a screenshot of the React Admin Panel showing the Repacks and Games explorer)_
 
-## 📄 License
+##  License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
