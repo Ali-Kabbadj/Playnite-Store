@@ -69,6 +69,20 @@ jobs:
           7z x Playnite.7z -oPlayniteToolbox -y
         shell: powershell
 
+      - name: Clean Duplicate Assemblies
+        # Playnite crashes if these DLLs are included in the extension folder
+        run: |
+          $ReleaseDir = "playnite/playnite-extension/playnite-extension/bin/Release"
+          $FilesToDelete = @("Playnite.SDK.dll", "Playnite.SDK.xml", "Newtonsoft.Json.dll", "System.ValueTuple.dll")
+          foreach ($File in $FilesToDelete) {
+              $Path = Join-Path $ReleaseDir $File
+              if (Test-Path $Path) {
+                  Remove-Item -Path $Path -Force
+                  Write-Host "Deleted duplicate assembly: $File"
+              }
+          }
+        shell: powershell
+
       - name: Pack Extension (.pext)
         run: |
           mkdir packed_extension

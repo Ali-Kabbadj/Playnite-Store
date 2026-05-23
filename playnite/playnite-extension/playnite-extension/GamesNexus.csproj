@@ -27,19 +27,30 @@
       <None Remove="Resources\Icons\**" />
       <Page Remove="Resources\Icons\**" />
     </ItemGroup>
-<ItemGroup>
+    <ItemGroup>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-        <PackageReference Include="PlayniteSDK" Version="6.16.0">
-            <PrivateAssets>all</PrivateAssets>
-            <ExcludeAssets>runtime</ExcludeAssets>
-        </PackageReference>
+        <PackageReference Include="PlayniteSDK" Version="6.16.0" />
         <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     </ItemGroup>
-    <ItemGroup>
-        <Reference Include="System.Net.Http" />
-        <Reference Include="System.Drawing" />
-        <Reference Include="System.Windows.Forms" />
-    </ItemGroup>
+	<ItemGroup>
+		<!-- Downgrade to 10.0.3 to match Playnite's internal version and exclude from output -->
+		<PackageReference Include="Newtonsoft.Json" Version="10.0.3">
+			<PrivateAssets>all</PrivateAssets>
+			<ExcludeAssets>runtime</ExcludeAssets>
+		</PackageReference>
+
+		<!-- Prevent Playnite SDK from being copied -->
+		<PackageReference Include="PlayniteSDK" Version="6.16.0">
+			<PrivateAssets>all</PrivateAssets>
+			<ExcludeAssets>runtime</ExcludeAssets>
+		</PackageReference>
+
+		<!-- Prevent ValueTuple from conflicting -->
+		<PackageReference Include="System.ValueTuple" Version="4.5.0">
+			<PrivateAssets>all</PrivateAssets>
+			<ExcludeAssets>runtime</ExcludeAssets>
+		</PackageReference>
+	</ItemGroup>
     <ItemGroup>
         <None Update="extension.yaml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
