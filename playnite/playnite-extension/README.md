@@ -1,4 +1,4 @@
-# 🕹️ GamesNexus Playnite Extension
+#  GamesNexus Playnite Extension
 
 [← Back to Root README](../../README.md) | [Read Architecture](../../docs/ARCHITECTURE_AND_PIPELINE.md)
 
