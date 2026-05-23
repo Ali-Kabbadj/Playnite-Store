@@ -1,4 +1,4 @@
-# 🏗️ Architecture, Hosting, and Community Pipeline
+#  Architecture, Hosting, and Community Pipeline
 
 This document explains the infrastructure behind GamesNexus, how it is deployed in production, and how the community works together to maintain the database.
 
