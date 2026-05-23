@@ -51,6 +51,13 @@
             TRACE
         </DefineConstants>
     </PropertyGroup>
+    <!-- THIS IS WHAT WAS MISSING: Prevents MSBuild from exploding on your image files -->
+    <ItemGroup>
+        <Compile Remove="Resources\Icons\**" />
+        <EmbeddedResource Remove="Resources\Icons\**" />
+        <None Remove="Resources\Icons\**" />
+        <Page Remove="Resources\Icons\**" />
+    </ItemGroup>
     <!-- CLEAN, DEDUPLICATED DEPENDENCIES -->
     <ItemGroup>
         <PackageReference Include="Newtonsoft.Json" Version="10.0.3">
@@ -77,16 +84,12 @@
                 runtime
             </ExcludeAssets>
         </PackageReference>
-        <!-- Fixes the WPF System.Net.Http compiler bug -->
+        <!-- Fixes the WPF temporary compiler bug for System.Net.Http -->
         <PackageReference Include="System.Net.Http" Version="4.3.4" />
     </ItemGroup>
-    <!-- STANDARD FRAMEWORK REFERENCES -->
     <ItemGroup>
-        <Reference Include="System" />
-        <Reference Include="System.Core" />
         <Reference Include="System.Drawing" />
         <Reference Include="System.Windows.Forms" />
-        <Reference Include="Microsoft.CSharp" />
     </ItemGroup>
     <ItemGroup>
         <None Update="extension.yaml">
@@ -107,6 +110,9 @@
                 PreserveNewest
             </CopyToOutputDirectory>
         </None>
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Core\Base\" />
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Properties\Settings.Designer.cs">
