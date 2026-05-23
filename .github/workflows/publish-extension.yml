@@ -45,7 +45,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Authenticate using the built-in GitHub Actions token to avoid rate limits
+          # Authenticate using the built-in GitHub Actions token
           $Headers = @{
               "Authorization" = "Bearer $env:GITHUB_TOKEN"
               "User-Agent" = "GitHub-Actions"
@@ -53,17 +53,19 @@ jobs:
 
           $Release = Invoke-RestMethod -Uri "https://api.github.com/repos/JosefNemec/Playnite/releases/latest" -Headers $Headers
 
-          # Find the portable .zip file (usually PlayniteX.XX.zip)
-          $Asset = $Release.assets | Where-Object { $_.name -match "Playnite.*\.zip" } | Select-Object -First 1
+          # Find the portable .7z file
+          $Asset = $Release.assets | Where-Object { $_.name -match "\.7z$" } | Select-Object -First 1
 
           if (-not $Asset) {
-             Write-Error "Could not find the Playnite Portable asset. Assets found: $($Release.assets.name -join ', ')"
+             Write-Error "Could not find the Playnite Portable .7z asset. Assets found: $($Release.assets.name -join ', ')"
              exit 1
           }
 
           Write-Host "Found Asset: $($Asset.name) at $($Asset.browser_download_url)"
-          Invoke-WebRequest -Uri $Asset.browser_download_url -OutFile "Playnite.zip"
-          Expand-Archive "Playnite.zip" -DestinationPath "PlayniteToolbox" -Force
+          Invoke-WebRequest -Uri $Asset.browser_download_url -OutFile "Playnite.7z"
+
+          # GitHub Windows runners have 7z pre-installed. We use it to extract the .7z file.
+          7z x Playnite.7z -oPlayniteToolbox -y
         shell: powershell
 
       - name: Pack Extension (.pext)
