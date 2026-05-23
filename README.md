@@ -2,10 +2,6 @@
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg) ![Playnite](https://img.shields.io/badge/Playnite-Extension-orange.svg)
 
-**GamesNexus** is a comprehensive, crowdsourced ecosystem for Playnite that bridges the gap between your game library and the world of game repacks and releases.
-
-It consists of a blazing-fast Playnite extension, a high-performance caching API, and a robust Admin Panel for community-driven data curation.
-
 ![GamesNexus Playnite Integration](./docs/assets/playnite-extension-preview.png)
 
 ## Features
