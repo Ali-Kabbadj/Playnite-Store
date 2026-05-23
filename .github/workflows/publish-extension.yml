@@ -42,12 +42,28 @@ jobs:
         run: msbuild playnite/playnite-extension/playnite-extension/GamesNexus.csproj /p:Configuration=Release
 
       - name: Download Playnite Toolbox
-        # Automatically finds and downloads the latest portable Playnite version to extract the Toolbox
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          $Release = Invoke-RestMethod -Uri "https://api.github.com/repos/JosefNemec/Playnite/releases/latest"
-          $Asset = $Release.assets | Where-Object { $_.name -match "Playnite[0-9\.]+\.zip" }
+          # Authenticate using the built-in GitHub Actions token to avoid rate limits
+          $Headers = @{
+              "Authorization" = "Bearer $env:GITHUB_TOKEN"
+              "User-Agent" = "GitHub-Actions"
+          }
+
+          $Release = Invoke-RestMethod -Uri "https://api.github.com/repos/JosefNemec/Playnite/releases/latest" -Headers $Headers
+
+          # Find the portable .zip file (usually PlayniteX.XX.zip)
+          $Asset = $Release.assets | Where-Object { $_.name -match "Playnite.*\.zip" } | Select-Object -First 1
+
+          if (-not $Asset) {
+             Write-Error "Could not find the Playnite Portable asset. Assets found: $($Release.assets.name -join ', ')"
+             exit 1
+          }
+
+          Write-Host "Found Asset: $($Asset.name) at $($Asset.browser_download_url)"
           Invoke-WebRequest -Uri $Asset.browser_download_url -OutFile "Playnite.zip"
-          Expand-Archive "Playnite.zip" -DestinationPath "PlayniteToolbox"
+          Expand-Archive "Playnite.zip" -DestinationPath "PlayniteToolbox" -Force
         shell: powershell
 
       - name: Pack Extension (.pext)
