@@ -16,6 +16,7 @@ namespace GamesNexus.App
         public static GamesNexusAppSettings Settings { get; private set; }
         public static MainViewModel MainVM { get; private set; }
         public static UserControl CachedView { get; set; }
+        public static DownloadManagerService DownloadManager { get; private set; }
 
         public static void Initialize(IPlayniteAPI playniteApi)
         {
@@ -29,6 +30,8 @@ namespace GamesNexus.App
             Cache = new GamesNexusCacheService(appDir);
             Settings = Cache.GetSettings() ?? new GamesNexusAppSettings();
             Api = new GamesNexusApiService(Settings.ApiUrl);
+            DownloadManager = new DownloadManagerService();
+
             MainVM = new MainViewModel();
         }
     }

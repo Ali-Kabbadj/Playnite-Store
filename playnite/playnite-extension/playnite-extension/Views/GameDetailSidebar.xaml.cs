@@ -1,6 +1,7 @@
 using GamesNexus.App;
 using GamesNexus.Models;
 using GamesNexus.Services;
+using GamesNexus.ViewModels;
 using Playnite.SDK;
 using System;
 using System.Collections.Generic;
@@ -41,12 +42,8 @@ namespace GamesNexus.Views
 
             HeroImageChanged?.Invoke(game?.HeroImageBitmap);
 
-            if (SidebarRepackDownloadBtn != null)
-            {
-                SidebarRepackDownloadBtn.IsEnabled = false;
-                if (SidebarRepackDownloadText != null)
-                    SidebarRepackDownloadText.Text = "Download";
-            }
+            // Reset the download button state on our new control
+            RepackSelector.SetDownloadingState(false);
 
             SidebarRoot.Visibility = Visibility.Visible;
             var sb = new Storyboard();
@@ -154,7 +151,12 @@ namespace GamesNexus.Views
                 }
 
                 _allRepacks = deepGame.Repacks;
-                ApplyRepackFilter();
+
+                // Load into our new control and wire up the event
+                RepackSelector.LoadRepacks(_allRepacks);
+                RepackSelector.DownloadRequested -= OnRepackDownloadRequested;
+                RepackSelector.DownloadRequested += OnRepackDownloadRequested;
+
                 SidebarRepackSection.Visibility = Visibility.Visible;
             }
             else
@@ -162,6 +164,39 @@ namespace GamesNexus.Views
                 SidebarRepackDateBadge.Visibility = Visibility.Collapsed;
                 _allRepacks.Clear();
                 SidebarRepackSection.Visibility = Visibility.Collapsed;
+            }
+        }
+
+
+        private async void OnRepackDownloadRequested(Repack selected)
+        {
+            if (_game == null) return;
+
+            try
+            {
+                // Find the first magnet link in the repack
+                var magnet = selected.Uris?.FirstOrDefault(u => u.StartsWith("magnet:"));
+
+                if (magnet != null)
+                {
+                    // Send to our built-in Download Manager!
+                    await GamesNexusContext.DownloadManager.StartDownloadAsync(_game, selected, magnet);
+
+                    // Switch the main UI to the Downloads tab to show them the progress!
+                    if (DataContext is MainViewModel mainVm)
+                    {
+                        mainVm.ActiveTab = "Downloads";
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No magnet link available for this repack. Only direct links are provided.", "Download Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Download failed");
+                MessageBox.Show($"Failed to start download: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -181,92 +216,5 @@ namespace GamesNexus.Views
         }
 
         private void SidebarClose_Click(object sender, RoutedEventArgs e) => Close();
-
-        private void ApplyRepackFilter()
-        {
-            if (SidebarRepackCombo == null) return;
-
-            var filtered = _allRepacks.AsEnumerable()
-                                      .OrderByDescending(r => r.UploadDate ?? "")
-                                      .ToList();
-
-            SidebarRepackCombo.ItemsSource = filtered;
-
-            if (filtered.Count > 0)
-            {
-                SidebarRepackCombo.SelectedIndex = 0;
-                SidebarRepackDownloadBtn.IsEnabled = true;
-            }
-            else
-            {
-                SidebarRepackDownloadBtn.IsEnabled = false;
-            }
-
-            SidebarRepackHeader.Text = $"Available Repacks ({filtered.Count})";
-        }
-
-        private void SidebarRepackCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (SidebarRepackDownloadBtn != null)
-                SidebarRepackDownloadBtn.IsEnabled = SidebarRepackCombo.SelectedItem != null;
-        }
-
-        private async void SidebarRepackDownload_Click(object sender, RoutedEventArgs e)
-        {
-            if (!(SidebarRepackCombo.SelectedItem is Repack selected)) return;
-            if (_game == null) return;
-
-            if (SidebarRepackDownloadBtn != null)
-            {
-                SidebarRepackDownloadBtn.IsEnabled = false;
-                if (SidebarRepackDownloadText != null)
-                    SidebarRepackDownloadText.Text = "Starting...";
-            }
-
-            try
-            {
-                if (selected.HasMagnet)
-                {
-                    var magnet = selected.Uris?.FirstOrDefault(u => u.StartsWith("magnet:"));
-                    if (magnet != null)
-                    {
-                        var settings = GamesNexusContext.Settings;
-                        if (settings != null && settings.AutoOpenMagnet)
-                            Process.Start(new ProcessStartInfo(magnet) { UseShellExecute = true });
-                        else
-                        {
-                            Clipboard.SetText(magnet);
-                            MessageBox.Show("Magnet link copied to clipboard!", "Magnet Link", MessageBoxButton.OK, MessageBoxImage.Information);
-                        }
-                    }
-                }
-                else
-                {
-                    var firstUri = selected.Uris?.FirstOrDefault();
-                    if (!string.IsNullOrEmpty(firstUri))
-                    {
-                        Clipboard.SetText(firstUri);
-                        MessageBox.Show("Download link copied to clipboard!", "Download Link", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                }
-
-                if (DownloadRequested != null)
-                    await DownloadRequested(_game, selected);
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex, "Download failed");
-                MessageBox.Show($"Download failed: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                if (SidebarRepackDownloadBtn != null)
-                {
-                    SidebarRepackDownloadBtn.IsEnabled = true;
-                    if (SidebarRepackDownloadText != null)
-                        SidebarRepackDownloadText.Text = "Download";
-                }
-            }
-        }
     }
 }

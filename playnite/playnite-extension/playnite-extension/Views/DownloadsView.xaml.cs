@@ -1,7 +1,5 @@
 using GamesNexus.App;
 using GamesNexus.Models;
-using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -9,40 +7,44 @@ namespace GamesNexus.Views
 {
     public partial class DownloadsView : UserControl
     {
-        public List<Download> AllDownloads { get; set; } = new List<Download>();
-        public List<InstallTask> AllInstalls { get; set; } = new List<InstallTask>();
-
         public DownloadsView()
         {
             InitializeComponent();
         }
 
-        public void RefreshUI()
-        {
-            DownloadsList.ItemsSource = null;
-            DownloadsList.ItemsSource = AllDownloads;
-            InstallsList.ItemsSource = null;
-            InstallsList.ItemsSource = AllInstalls;
-        }
-
-        private async void RefreshDownloads_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void DownloadPlay_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
         private void DownloadPause_Click(object sender, RoutedEventArgs e)
         {
+            Button button = sender as Button;
+            if (button == null)
+                return;
+
+            Download dl = button.Tag as Download;
+            if (dl == null)
+                return;
+
+            GamesNexusContext.DownloadManager.PauseResumeDownload(dl.Id);
         }
 
         private void DownloadRemove_Click(object sender, RoutedEventArgs e)
         {
-        }
+            Button button = sender as Button;
+            if (button == null)
+                return;
 
-        private async void InstallFromCompleted_Click(object sender, RoutedEventArgs e)
-        {
+            Download dl = button.Tag as Download;
+            if (dl == null)
+                return;
+
+            var res = MessageBox.Show(
+                "Are you sure you want to cancel downloading " + dl.Title + "?",
+                "Cancel Download",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (res == MessageBoxResult.Yes)
+            {
+                GamesNexusContext.DownloadManager.CancelDownload(dl.Id);
+            }
         }
     }
 }

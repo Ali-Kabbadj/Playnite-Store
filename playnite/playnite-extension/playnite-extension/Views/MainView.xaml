@@ -106,7 +106,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Border Grid.Row="0" Background="{StaticResource FxControlBg}" CornerRadius="0,0,24,24" Margin="0,0,0,16" Padding="16,8">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,34,0,-8">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,34,0,-8">
                 <RadioButton x:Name="CatalogTab" Style="{StaticResource FxTabButton}" Tag="Catalog" IsChecked="True" Checked="Tab_Checked">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Text="☰" Margin="0,-2,6,0" VerticalAlignment="Center" />

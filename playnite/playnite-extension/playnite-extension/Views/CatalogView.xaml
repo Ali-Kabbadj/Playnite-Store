@@ -68,7 +68,7 @@
                 <StackPanel Grid.Column="5" Orientation="Horizontal" Margin="4,0" VerticalAlignment="Center">
                     <TextBlock Foreground="#99FFFFFF" VerticalAlignment="Center" Margin="4,0" Text="Zoom" />
                     <TextBlock Text="&#x2212;" Foreground="#99FFFFFF" FontSize="15" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,3,0" />
-                    <Slider x:Name="ZoomSlider" Minimum="0.8" Maximum="2" Value="1.0" Width="80" VerticalAlignment="Center" SmallChange="0.1" LargeChange="0.2" TickFrequency="0.1" IsSnapToTickEnabled="True" ValueChanged="ZoomSlider_ValueChanged" />
+                    <Slider x:Name="ZoomSlider" Minimum="0.8" Maximum="2" Value="1.0" Width="80" VerticalAlignment="Center" SmallChange="0.1" LargeChange="0.2" TickFrequency="0.1" IsSnapToTickEnabled="True" ValueChanged="ZoomSlider_ValueChanged" Height="17" />
                     <TextBlock Text="&#x002B;" Foreground="#99FFFFFF" FontSize="15" FontWeight="Bold" VerticalAlignment="Center" Margin="3,0,0,0" />
                     <TextBlock x:Name="GamesZoomTransformText" Text="100%" Foreground="#99FFFFFF" VerticalAlignment="Center" Margin="4,0" />
                 </StackPanel>

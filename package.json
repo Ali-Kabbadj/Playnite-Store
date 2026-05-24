@@ -1,0 +1,13 @@
+{
+  "name": "gamesnexus-orchestrator",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "concurrently -n \"API,ADMIN,NGROK\" -c \"green,blue,magenta\" \"npm run api\" \"npm run admin\" \"npm run ngrok\"",
+    "api": "cd api && npm run dev",
+    "admin": "cd admin-panel && npm run dev",
+    "ngrok": "ngrok http 3456"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

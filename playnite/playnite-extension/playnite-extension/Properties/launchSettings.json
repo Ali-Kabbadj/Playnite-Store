@@ -1,7 +1,8 @@
 {
   "profiles": {
-    "GamesNexus": {
-      "commandName": "Project"
+    "Profile 1": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Playnite\\Playnite.DesktopApp.exe"
     }
   }
 }
