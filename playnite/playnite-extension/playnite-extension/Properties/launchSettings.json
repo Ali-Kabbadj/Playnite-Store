@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Profile 1": {
+    " DesktopMode": {
       "commandName": "Executable",
       "executablePath": "C:\\Playnite\\Playnite.DesktopApp.exe"
     }

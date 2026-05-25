@@ -9,7 +9,6 @@ import {
   TerminalSquare,
 } from "lucide-react";
 
-// The script file name is hidden from the UI, we only show friendly names and icons.
 const OPERATIONS = [
   {
     file: "fetch_hydra_sources.py",

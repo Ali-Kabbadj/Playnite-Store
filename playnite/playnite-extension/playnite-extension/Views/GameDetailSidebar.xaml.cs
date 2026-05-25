@@ -26,7 +26,6 @@ namespace GamesNexus.Views
 
         public event Action<BitmapSource> HeroImageChanged;
         public event Action<List<string>, int> ScreenshotClicked;
-        public event Func<Game, Repack, Task> DownloadRequested;
 
         public GameDetailSidebar() { InitializeComponent(); }
 

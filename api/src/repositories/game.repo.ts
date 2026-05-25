@@ -42,13 +42,15 @@ export class GameRepository {
             countSql += whereClause;
         }
 
-        if (sort === 'title_asc') sql += ` ORDER BY name ASC`;
-        else if (sort === 'title_desc') sql += ` ORDER BY name DESC`;
-        else if (sort === 'date_asc') sql += ` ORDER BY (SELECT MAX(release_date) FROM game_release_dates grd WHERE grd.game_id = games.id) ASC NULLS LAST`;
-        else if (sort === 'date_desc') sql += ` ORDER BY (SELECT MAX(release_date) FROM game_release_dates grd WHERE grd.game_id = games.id) DESC NULLS LAST`;
-        else if (sort === 'upload_asc') sql += ` ORDER BY (SELECT MAX(r.upload_date) FROM game_repacks gr JOIN repacks r ON r.id = gr.repack_id WHERE gr.game_id = games.id) ASC NULLS LAST`;
-        else if (sort === 'upload_desc') sql += ` ORDER BY (SELECT MAX(r.upload_date) FROM game_repacks gr JOIN repacks r ON r.id = gr.repack_id WHERE gr.game_id = games.id) DESC NULLS LAST`;
-        else sql += ` ORDER BY id DESC`;
+        const logoFirst = '(SELECT CASE WHEN EXISTS (SELECT 1 FROM game_logos WHERE game_id = games.id) THEN 0 ELSE 1 END) ASC, ';
+
+        if (sort === 'title_asc') sql += ` ORDER BY ${logoFirst}name ASC`;
+        else if (sort === 'title_desc') sql += ` ORDER BY ${logoFirst}name DESC`;
+        else if (sort === 'date_asc') sql += ` ORDER BY ${logoFirst}(SELECT MAX(release_date) FROM game_release_dates grd WHERE grd.game_id = games.id) ASC NULLS LAST`;
+        else if (sort === 'date_desc') sql += ` ORDER BY ${logoFirst}(SELECT MAX(release_date) FROM game_release_dates grd WHERE grd.game_id = games.id) DESC NULLS LAST`;
+        else if (sort === 'upload_asc') sql += ` ORDER BY ${logoFirst}(SELECT MAX(r.upload_date) FROM game_repacks gr JOIN repacks r ON r.id = gr.repack_id WHERE gr.game_id = games.id) ASC NULLS LAST`;
+        else if (sort === 'upload_desc') sql += ` ORDER BY ${logoFirst}(SELECT MAX(r.upload_date) FROM game_repacks gr JOIN repacks r ON r.id = gr.repack_id WHERE gr.game_id = games.id) DESC NULLS LAST`;
+        else sql += ` ORDER BY ${logoFirst}id DESC`;
 
         params.push(limit, offset);
         sql += ` LIMIT $${params.length - 1} OFFSET $${params.length}`;
@@ -226,5 +228,24 @@ export class GameRepository {
         const sql = `SELECT id, name, logo as logo_url FROM providers ORDER BY name ASC`;
         const res = await pool.query(sql);
         return res.rows;
+    }
+
+    static async getLogosForGames(gameIds: string[]): Promise<{ game_id: string, url: string }[]> {
+        if (!gameIds.length) return [];
+        const sql = `SELECT game_id, url FROM game_logos WHERE game_id = ANY($1::bigint[])`;
+        const res = await pool.query(sql, [gameIds]);
+        return res.rows;
+    }
+
+    static async getLogosForGame(gameId: string) {
+        const sql = `SELECT url FROM game_logos WHERE game_id = $1 LIMIT 1`;
+        const res = await pool.query(sql, [gameId]);
+        return res.rows.length ? res.rows[0].url : null;
+    }
+
+    static async getLogoForGame(gameId: string) {
+        const sql = `SELECT url FROM game_logos WHERE game_id = $1 LIMIT 1`;
+        const res = await pool.query(sql, [gameId]);
+        return res.rows.length ? res.rows[0].url : null;
     }
 }

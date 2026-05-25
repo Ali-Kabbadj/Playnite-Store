@@ -19,7 +19,6 @@ export function Login({ onLogin }: Props) {
     setLoading(true);
 
     try {
-      // Use direct axios call here to bypass the admin interceptor's base URL
       const res = await axios.post("http://localhost:3456/api/v1/auth/login", {
         username,
         password,

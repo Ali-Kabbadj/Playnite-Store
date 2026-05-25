@@ -37,7 +37,6 @@ export default function App() {
   >([]);
   const [pendingCreateIds, setPendingCreateIds] = useState<number[]>([]);
 
-  // 2. Listen for the 401 Unauthorized event to log the user out smoothly
   useEffect(() => {
     const handleLogout = () => setToken(null);
     window.addEventListener("auth_unauthorized", handleLogout);
@@ -115,7 +114,6 @@ export default function App() {
             )}
           </button>
 
-          {/* ADD THIS LOGOUT BUTTON */}
           <Button
             variant="ghost"
             size="sm"

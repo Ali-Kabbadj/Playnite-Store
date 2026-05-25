@@ -5,7 +5,7 @@ import { Repack } from "./repack.type";
 
 
 export interface Game {
-    id: string; 
+    id: string;
     name: string | null;
     slug: string | null;
     summary: string | null;
@@ -24,12 +24,13 @@ export interface Game {
     screenshots?: Screenshot[];
     videos?: Video[];
     repacks?: Repack[];
+    logo_url?: string | null;
 }
 
 export interface ReleaseDate {
     id: string;
     platform_id: string | null;
-    release_date: number | null; 
+    release_date: number | null;
     release_year: number | null;
     region_name: string | null;
 }

@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" MSBuildRuntime="netfx" MSBuildTargets="netfx">
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<OutputType>Library</OutputType>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<EnableDefaultPageItems>false</EnableDefaultPageItems>
+		<BaseOutputPath>C:\Users\Ali\Desktop\Playnite-Store\playnite\fullscreen-theme\bin</BaseOutputPath>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <PlatformTarget>x86</PlatformTarget>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Page Include="**\*.xaml" SubType="Designer" Generator="MSBuild:Compile" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="Playnite">
+			<HintPath>C:\Playnite\Playnite.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="Playnite.FullscreenApp">
+			<HintPath>C:\Playnite\Playnite.FullscreenApp.exe</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="PlayniteSDK">
+			<HintPath>C:\Playnite\Playnite.SDK.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="theme.yaml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+</Project>

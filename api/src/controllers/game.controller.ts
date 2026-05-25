@@ -46,8 +46,11 @@ export class GameController {
 
             if (game.cover_url) {
                 game.cover_url = game.cover_url.replace("t_thumb", "t_1080p");
+
             }
 
+
+            console.log(game);
 
             if (game.screenshots) {
                 game.screenshots = game.screenshots.map((s: any) => {
@@ -58,6 +61,7 @@ export class GameController {
                 }
                 );
             }
+
             return reply.send(game);
         } catch (error) {
             request.log.error(error);

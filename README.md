@@ -6,17 +6,17 @@
 
 ## Repository Structure
 
-| Component              | Path                           | Description                                                  | 
-| :--------------------- | :----------------------------- | :----------------------------------------------------------- | 
+| Component              | Path                           | Description                                                  |
+| :--------------------- | :----------------------------- | :----------------------------------------------------------- |
 | **Playnite Extension** | `/playnite/playnite-extension` | The C# WPF Add-on that users install in Playnite.            |
-| **Public API**         | `/api`                         | The read-only API serving data to the Playnite extension.    | 
+| **Public API**         | `/api`                         | The read-only API serving data to the Playnite extension.    |
 | **Admin Panel UI**     | `/db/admin_panel/frontend`     | The dashboard for community moderators.                      |
-| **Admin API**          | `/db/admin_panel/backend`      | The read/write API for managing the database.                | 
-| **ETL Scripts**        | `/db/scripts`                  | Python scripts for scraping, normalizing, and auditing data. | 
+| **Admin API**          | `/db/admin_panel/backend`      | The read/write API for managing the database.                |
+| **ETL Scripts**        | `/db/scripts`                  | Python scripts for scraping, normalizing, and auditing data. |
 
 1. **Architecture & Master Plan:** Read [`docs/ARCHITECTURE_AND_PIPELINE.md`](./docs/ARCHITECTURE_AND_PIPELINE.md) to understand how the pieces fit together.
 2. **Backend API:** Check out the [API Setup Guide (`/api/README.md`)](./api/README.md).
-3. **Admin Panel:** Head over to the [Admin Panel Guide (`/db/admin_panel/README.md`)](./db/admin_panel/README.md).
+3. **Admin Panel:** Head over to the [Admin Panel Guide (`/admin_panel/README.md`)](./admin_panel/README.md).
 4. **Playnite Extension:** Read the [Extension Dev Guide (`/playnite/playnite-extension/README.md`)](./playnite/playnite-extension/README.md).
 5. **Python ETL Scripts:** Read the [Database Scripts Guide (`/db/scripts/README.md`)](./db/scripts/README.md).
 
@@ -49,7 +49,7 @@ To recreate the `playnitedb` database locally using the repository dump, follow 
    ```
 
 4. **Restore the database schema and data** from the dump file:
+
    ```bash
    pg_restore -U postgres -d playnitedb db/playnitedb.dump
    ```
-

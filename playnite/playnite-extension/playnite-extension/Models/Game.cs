@@ -27,6 +27,35 @@ namespace GamesNexus.Models
         [JsonIgnore] public bool HasPlatformBadge => PlatformBadge != null;
 
         [JsonIgnore]
+        public string PlatformsDisplay => Platforms != null && Platforms.Count > 0
+            ? string.Join(", ", Platforms.Select(p => p.Name))
+            : "Unknown Platform";
+
+        [JsonIgnore]
+        public string ReleaseDateLabel => !string.IsNullOrEmpty(ShallowReleaseDate) ? ShallowReleaseDate : ReleaseYearLabel;
+        [JsonIgnore] public bool IsInstalled => false;
+        [JsonIgnore]
+        public string GenresDisplay => Genres != null && Genres.Count > 0 ? string.Join(", ", Genres.Select(g => g.Name)) : "Unknown Genre";
+
+        [JsonIgnore]
+        public string DevelopersDisplay => Developers != null && Developers.Count > 0 ? string.Join(", ", Developers.Select(d => d.Name)) : "Unknown Developer";
+
+        [JsonIgnore]
+        public string PublishersDisplay => Publishers != null && Publishers.Count > 0 ? string.Join(", ", Publishers.Select(p => p.Name)) : "Unknown Publisher";
+
+        [JsonProperty("logo_url")] public string LogoUrl { get; set; }
+
+        private BitmapImage _logoImageBitmap;
+        [JsonIgnore]
+        public BitmapImage LogoImageBitmap
+        {
+            get => _logoImageBitmap;
+            set { SetProperty(ref _logoImageBitmap, value); OnPropertyChanged(nameof(HasLogo)); }
+        }
+        [JsonIgnore] public bool HasLogo => LogoImageBitmap != null;
+
+
+        [JsonIgnore]
         public BitmapImage PlatformIcon
         {
             get
@@ -42,7 +71,11 @@ namespace GamesNexus.Models
                 return Services.IconLoader.LoadIcon($"Shared\\Platforms\\{slug}.png");
             }
         }
-        [JsonIgnore] public bool HasPlatformIcon => PlatformIcon != null;
+        [JsonIgnore]
+        public bool HasPlatformIcon => PlatformIcon != null;
+
+        [JsonIgnore]
+        public string DisplayName => Name;
         [JsonIgnore] public bool HasPlatformText => HasPlatformBadge && !HasPlatformIcon;
 
         [JsonIgnore] public string PublisherBadge => Publishers?.FirstOrDefault()?.Name;
@@ -116,6 +149,22 @@ namespace GamesNexus.Models
             {
                 if (Repacks == null || Repacks.Count == 0) return "Unknown";
                 return string.Join(", ", Repacks.Select(r => r.Source?.Title ?? r.SourceName).Where(s => s != null).Distinct());
+            }
+        }
+
+        [JsonIgnore]
+        public string ReleaseYearLabel
+        {
+            get
+            {
+                if (ReleaseDates != null && ReleaseDates.Count > 0)
+                {
+                    var year = ReleaseDates.FirstOrDefault(r => r.ReleaseYear.HasValue)?.ReleaseYear;
+                    if (year.HasValue) return year.Value.ToString();
+                }
+                if (!string.IsNullOrEmpty(ShallowReleaseDate) && ShallowReleaseDate.Length >= 4)
+                    return ShallowReleaseDate.Substring(0, 4);
+                return null;
             }
         }
     }

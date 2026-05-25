@@ -67,7 +67,7 @@ export class AdminManagementRepository {
             await pool.query(`DELETE FROM ${table} WHERE id = $1`, [id]);
             return true;
         } catch {
-            return false; // usually fails due to foreign key constraints
+            return false; 
         }
     }
 }

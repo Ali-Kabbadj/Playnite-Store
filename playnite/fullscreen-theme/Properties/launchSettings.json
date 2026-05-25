@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FullscreenMode": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Playnite\\Playnite.FullscreenApp.exe"
+    }
+  }
+}

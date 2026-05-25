@@ -20,10 +20,9 @@ apiClient.interceptors.response.use(
     (error: AxiosError<ApiErrorResponse>) => {
         const message = error.response?.data?.error || error.message;
 
-        // Gracefully handle 401 Unauthorized without infinite reloads
         if (error.response?.status === 401) {
             localStorage.removeItem('admin_token');
-            window.dispatchEvent(new Event('auth_unauthorized')); // Trigger event instead of reload
+            window.dispatchEvent(new Event('auth_unauthorized')); 
         }
 
         console.error('API Error:', message);

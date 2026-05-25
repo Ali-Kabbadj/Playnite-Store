@@ -6,7 +6,6 @@ export class AdminOperationsController {
     static async runScript(request: FastifyRequest, reply: FastifyReply) {
         const { script } = request.params as { script: string };
 
-        // Security check: Only allow specific scripts to be run
         const allowedScripts = ['db_sync.py', 'smart_audit.py', 'analyze_titles.py', 'db_full_report.py', 'fetch_hydra_sources.py', 'db_backup.py'];
         if (!allowedScripts.includes(script)) {
             return reply.status(400).send({ error: 'Invalid script' });

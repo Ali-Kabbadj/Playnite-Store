@@ -20,16 +20,19 @@ export class GameService {
 
             const gameIds = games.map(g => g.id);
 
-            const [genresData, platformsData, companiesData, repacksData] = await Promise.all([
+            const [genresData, platformsData, companiesData, repacksData, logosData] = await Promise.all([
                 GameRepository.getGenresForGames(gameIds),
                 GameRepository.getPlatformsForGames(gameIds),
                 GameRepository.getCompaniesForGames(gameIds),
-                GameRepository.getRepacksForGames(gameIds)
+                GameRepository.getRepacksForGames(gameIds),
+                GameRepository.getLogosForGames(gameIds)
             ]);
 
             const genresMap = this.groupBy(genresData, 'game_id', 'genre');
             const platformsMap = this.groupBy(platformsData, 'game_id', 'platform');
             const repacksMap = this.groupBy(repacksData, 'game_id', 'repack');
+            const logosMap: Record<string, string> = {};
+            logosData.forEach(row => { logosMap[row.game_id] = row.url; });
 
             const developersMap: Record<string, any[]> = {};
             const publishersMap: Record<string, any[]> = {};
@@ -51,7 +54,8 @@ export class GameService {
                 platforms: platformsMap[game.id] || [],
                 developers: developersMap[game.id] || [],
                 publishers: publishersMap[game.id] || [],
-                repacks: repacksMap[game.id] || []
+                repacks: repacksMap[game.id] || [],
+                logo_url: logosMap[game.id] || null
             }));
 
             return {
@@ -82,7 +86,8 @@ export class GameService {
             // Fetch ALL relational data in parallel for blazing speed
             const [
                 genresData, platformsData, companiesData, repacksData,
-                screenshots, videos, releaseDates, artworks
+                screenshots, videos, releaseDates, artworks,
+                logoUrl
             ] = await Promise.all([
                 GameRepository.getGenresForGames([id]),
                 GameRepository.getPlatformsForGames([id]),
@@ -91,7 +96,8 @@ export class GameService {
                 GameRepository.getScreenshotsForGame(id),
                 GameRepository.getVideosForGame(id),
                 GameRepository.getReleaseDatesForGame(id),
-                GameRepository.getArtworksForGame(id)
+                GameRepository.getArtworksForGame(id),
+                GameRepository.getLogosForGame(id)
             ]);
 
             const developers = companiesData.filter(c => c.is_developer).map(c => c.company);
@@ -107,7 +113,8 @@ export class GameService {
                 screenshots,
                 videos,
                 release_dates: releaseDates,
-                artworks 
+                artworks,
+                logo_url: logoUrl
             };
         });
     }

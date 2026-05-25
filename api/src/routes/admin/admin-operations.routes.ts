@@ -5,7 +5,5 @@ import { verifyJwt, verifyRole } from '../../middlewares/auth.middleware';
 export default async function adminOperationsRoutes(fastify: FastifyInstance) {
     fastify.addHook('preValidation', verifyJwt);
     fastify.addHook('preValidation', verifyRole(['admin', 'moderator']));
-
-    // We use GET because EventSource (SSE) only supports GET requests
     fastify.get('/api/v1/admin/operations/run/:script', AdminOperationsController.runScript);
 }

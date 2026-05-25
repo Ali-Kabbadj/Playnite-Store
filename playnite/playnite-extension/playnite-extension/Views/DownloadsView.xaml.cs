@@ -12,7 +12,7 @@ namespace GamesNexus.Views
             InitializeComponent();
         }
 
-        private void DownloadPause_Click(object sender, RoutedEventArgs e)
+        private async void DownloadPause_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
             if (button == null)
@@ -22,10 +22,10 @@ namespace GamesNexus.Views
             if (dl == null)
                 return;
 
-            GamesNexusContext.DownloadManager.PauseResumeDownload(dl.Id);
+            await GamesNexusContext.DownloadManager.PauseResumeDownload(dl.Id);
         }
 
-        private void DownloadRemove_Click(object sender, RoutedEventArgs e)
+        private async void DownloadRemove_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
             if (button == null)
@@ -43,7 +43,7 @@ namespace GamesNexus.Views
 
             if (res == MessageBoxResult.Yes)
             {
-                GamesNexusContext.DownloadManager.CancelDownload(dl.Id);
+                await GamesNexusContext.DownloadManager.CancelDownload(dl.Id);
             }
         }
     }

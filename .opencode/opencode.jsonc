@@ -1,0 +1,24 @@
+{
+  "name": "Playnite-Store",
+  "version": "1.0.0",
+  "description": "Games Nexus Playnite extension - provides store catalog, downloads, and game management for Playnite with full theme integration support",
+  "memory": {
+    "enabled": true,
+    "files": [
+      "AGENTS.md",
+      ".opencode/memory/architecture.md",
+      ".opencode/memory/theme-api.md"
+    ]
+  },
+  "agents": {
+    "instructions": "AGENTS.md"
+  },
+  "customInstructions": [
+    "KEY ARCHITECTURE: Extension should NOT hijack the main panel in Fullscreen mode. Exposes GamesNexusCatalog on Application.Current.Resources. Themes provide their own XAML UI and bind to GamesNexusCatalog resource.",
+    "Extension registers sidebar item as fallback for Desktop mode only.",
+    "Theme's StoreOverlay toggled by ToggleStoreButton checkbox in Main.xaml",
+    "COMMANDS EXPOSED TO THEMES: IsStoreOpen, ToggleStoreCommand, SelectGameByIdCommand, DownloadRepackCommand, FilterByGenreCommand, FilterBySourceCommand, FilterByPlatformCommand, SortByCommand, SearchCommand, LoadNextPageCommand",
+    "PROPERTIES FOR THEMES: Games, StatusText, StatusTotalText, IsLoading, HasMore, CurrentSortBy, CurrentSortDesc, CurrentHasRepacks",
+    "THEME ELEMENTS EXTENSION LOOKS FOR: ToggleStoreButton (CheckBoxEx), StoreOverlay (Grid), GamesNexusStorePanel (ContentControl)"
+  ]
+}
